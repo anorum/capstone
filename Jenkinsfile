@@ -1,4 +1,9 @@
 pipeline {
+environment {
+registry = "anorum/udacitycapstone"
+registryCredential = 'anorum'
+dockerImage = ''
+}
   agent any
   stages {
 
@@ -9,20 +14,21 @@ pipeline {
               '''
           }
       }
-      stage('Build the Docker Image') {
-          steps {
-              sh '''
-              docker build -t anorum/udacitycapstone:latest .
-              '''
-          }
-      }
-      stage('Publish the Docker Image') {
-          steps {
-              sh '''
-              docker push anorum/udacitycapstone
-              '''
-          }
-      }
-
+        stage('Building our image') {
+        steps{
+        script {
+        dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+        }
+        }
+      stage('Deploy our image') {
+        steps{
+        script {
+        docker.withRegistry( '', registryCredential ) {
+        dockerImage.push()
+        }
+        }
+        }
+        }
 }
 }
