@@ -1,9 +1,4 @@
 pipeline {
-environment {
-registry = "anorum/udacitycapstone"
-registryCredential = 'anorum'
-dockerImage = ''
-}
   agent any
   stages {
 
@@ -14,21 +9,23 @@ dockerImage = ''
               '''
           }
       }
-        stage('Building our image') {
-        steps{
-        script {
-        dockerImage = docker.build registry + ":$BUILD_NUMBER"
-        }
-        }
-        }
-      stage('Deploy our image') {
-        steps{
-        script {
-        docker.withRegistry( '', registryCredential ) {
-        dockerImage.push()
-        }
-        }
-        }
-        }
+      stage('Build the Docker Image') {
+          steps {
+              sh '''
+              docker build -t anorum/udacitycapstone:latest .
+              '''
+          }
+      }
+      stage('Publish the Docker Image') {
+          steps {
+              withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
+					sh '''
+						docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+						docker push anorum/udacitycapstone
+					'''
+          }
+      }
+
+}
 }
 }
