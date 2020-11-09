@@ -2,10 +2,10 @@ pipeline {
   agent any
   stages {
 
-      stage('say hi') {
+      stage('Lint the website') {
           steps {
               sh '''
-              echo "hello"
+              tiday -q -e *.html
               '''
           }
       }

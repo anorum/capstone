@@ -1,16 +1,8 @@
-FROM node:12
 
-# Create app directory
-WORKDIR /app
-ADD . /app/
+FROM nginx
+## Step 1:
+RUN rm /usr/share/nginx/html/index.html
 
-# global install & update
-RUN npm install
-RUN npm run build
-RUN npm i -g eslint
-
-ENV HOST 0.0.0.0
-EXPOSE 3000
-
-# start command
-CMD [ "npm", "run", "start" ]
+## Step 2:
+# Copy source code to working directory
+COPY index.html /usr/share/nginx/html
