@@ -5,7 +5,7 @@ pipeline {
       stage('Lint the website') {
           steps {
               sh '''
-              tiday -q -e *.html
+              tidy -q -e *.html
               '''
           }
       }
