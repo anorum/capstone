@@ -16,6 +16,13 @@ pipeline {
               '''
           }
       }
+      stage('Publish the Docker Image') {
+          steps {
+              sh '''
+              docker push anorum/udacitycapstone
+              '''
+          }
+      }
 
 }
 }
