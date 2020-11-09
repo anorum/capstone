@@ -9,6 +9,7 @@ pipeline {
               '''
           }
       }
+  }
 
 //    stage('create eks cluster') {
 //        steps {
