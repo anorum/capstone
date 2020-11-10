@@ -50,7 +50,7 @@ pipeline {
                     exit 1
                 else
                     sed -e 's,BUILD,'${BUILD_NUMBER}',g' < k8s/app-service.yml | kubectl apply -f -
-                    kubectl delete deployment capstone-${BlueVersion}
+                    kubectl delete deployment capstone-$BlueVersion
                 fi      
                 '''
             }
