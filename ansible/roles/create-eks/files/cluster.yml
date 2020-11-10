@@ -1,0 +1,28 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: udacitycapstone
+  region: us-west-2
+managedNodeGroups:
+  - name: workers
+    instanceType: t2.micro
+    privateNetworking: true
+    minSize: 1
+    maxSize: 3
+    desiredCapacity: 3
+    volumeSize: 20
+    ssh:
+      allow: true
+      publicKeyName: udacity-key
+    labels: { role: worker }
+    tags:
+      nodegroup-role: worker
+    iam:
+      withAddonPolicies:
+        ebs: true
+        imageBuilder: true
+        efs: true
+        albIngress: true
+        autoScaler: true
+        cloudWatch: true
+        externalDNS: true

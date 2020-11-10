@@ -1,0 +1,6 @@
+---
+    - name: Configure node ec2 instances
+      hosts: server
+      user: ubuntu
+      roles:
+        - role: create-eks
