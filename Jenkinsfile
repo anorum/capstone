@@ -4,9 +4,11 @@ pipeline {
 
       stage('The cluster was created. So update the context on the Jenkins Server') {
           steps {
+              withAWS(region:'us-west-2', credentials:'aws_access_id') {
               sh '''
               aws eks --region us-west-2 update-kubeconfig --name udacitycapstone
               '''
+              }
           }
       }
       stage('Lint the website') {
