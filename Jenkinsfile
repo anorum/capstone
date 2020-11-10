@@ -19,7 +19,7 @@ pipeline {
       stage('Build the Docker Image') {
           steps {
               sh '''
-              docker build -t anorum/udacitycapstone:${BUILD_NUMBER} .
+              docker build -t anorum/udacitycapstone:latest .
               '''
           }
       }
@@ -28,7 +28,7 @@ pipeline {
               withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD']]){
 					sh '''
 						docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-						docker push anorum/udacitycapstone:${BUILD_NUMBER}
+						docker push anorum/udacitycapstone
 					'''
             }
         }
