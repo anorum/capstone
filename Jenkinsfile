@@ -35,5 +35,26 @@ pipeline {
             }
         }
     }
+    stage('Deploy Green Version and delete Blue Version') {
+        steps {
+            withAWS(region:'us-west-2', credentials:'aws_access_id') {
+                sh '''
+                export BlueVersion=$(kubectl get svc capstone -o=jsonpath='{.spec.selector.version}')
+                sed -e 's,BUILD,'${BUILD_NUMBER}',g' < k8s/app.yml | kubectl apply -f -
+
+                # Check the Health of the Deployment
+
+                if ! kubectl rollout status deployment capstone-${BUILD_NUMBER}; then
+                    kubectl delete deployment capstone-${BUILD_NUMBER}
+                    kubectl rollout status deployment capstone-${BUILD_NUMBER}
+                    exit 1
+                else
+                    sed -e 's,BUILD,'${BUILD_NUMBER}',g' < k8s/app-service.yml | kubectl apply -f -
+                    kubectl delete deployment capstone-${BlueVersion}
+                fi      
+                '''
+            }
+        }
+    }
 }   
 }

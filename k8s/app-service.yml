@@ -1,12 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-service
+  name: capstone
+  labels:
+    name: capstone
+    version: "${build}"
 spec:
-  selector:
-    run: app
+  type: LoadBalancer
   ports:
-  - name: http
-    port: 80
+  - port: 80
     protocol: TCP
-    targetPort: 80
+  selector:
+    name: capstone
+    version: "${build}"

@@ -1,28 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    run: app
-  name: app
+  name: capstone-BUILD
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      run: app
+      name: capstone
+      version: "BUILD"
+  replicas: 2
   template:
     metadata:
       labels:
-        run: app
+        name: capstone
+        version: "BUILD"
     spec:
       containers:
-      - name: app
-        image: anorum/udacitycapstone:latest
+      - name: capstone
+        image: anorum/udacitycapstone:BUILD
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
-        readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            successThreshold: 1
