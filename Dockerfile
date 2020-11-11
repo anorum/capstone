@@ -1,5 +1,5 @@
 
-FROM nginx
+FROM nginx:1.19.4
 ## Step 1:
 RUN rm /usr/share/nginx/html/index.html
 
