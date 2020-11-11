@@ -5,10 +5,10 @@ The following demonstrates using Jenkins to perform a Blue Green deployment on a
 
 The Blue Green Deployment is Implemented by spinning up a new deployment, checking its health and then redirecting the LoadBalancer service to the new Deployment if it's successful. 
 
-Step 1) Get the old BlueVersion deployment number
+Step 1) Get the old BlueVersion deployment number  
 `export BlueVersion=$(kubectl get svc capstone -o=jsonpath='{.spec.selector.version}')`
 
-Step 2) Using the Build Number from the current Jenkins build create a new deployment
+Step 2) Using the Build Number from the current Jenkins build create a new deployment  
 `sed -e 's,BUILD,'${BUILD_NUMBER}',g' < k8s/app.yml | kubectl apply -f -`
 
 Step 3) Check the Health of the new deployment. 
